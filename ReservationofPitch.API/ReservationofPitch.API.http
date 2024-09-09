@@ -1,0 +1,6 @@
+@ReservationofPitch.API_HostAddress = http://localhost:5042
+
+GET {{ReservationofPitch.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
