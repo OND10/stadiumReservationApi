@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using OnMapper;
 using Reservationpitch.Application.Abstractions.Messaging;
 using Reservationpitch.Application.Common.Handling;
 using Reservationpitch.Application.DTOs.StadiumDTOs.Response;
@@ -10,9 +11,9 @@ namespace Reservationpitch.Application.Services.StadiumServices.Commands.AddStad
     public class CreateStadiumCommandHandler : ICommandHandler<CreateStadiumCommand, StadiumResponseDto>
     {
         private readonly IStadiumRepository _pitchRepository;
-        private readonly IMapper _mapper;
+        private readonly OnMapping _mapper;
 
-        public CreateStadiumCommandHandler(IStadiumRepository pitchRepository, IMapper mapper)
+        public CreateStadiumCommandHandler(IStadiumRepository pitchRepository, OnMapping mapper)
         {
             _pitchRepository = pitchRepository;
             _mapper = mapper;
@@ -33,9 +34,9 @@ namespace Reservationpitch.Application.Services.StadiumServices.Commands.AddStad
             var result = await _pitchRepository.CreateAsync(model, cancellationToken);
 
             //Mapping your model to Response
-            var mappedResult = _mapper.Map<StadiumResponseDto>(result);
+            var mappedResult = await _mapper.Map<Stadium, StadiumResponseDto>(result);
 
-            return await Result<StadiumResponseDto>.SuccessAsync(mappedResult, "Added Successfully", true);
+            return await Result<StadiumResponseDto>.SuccessAsync(mappedResult.Data, "Added Successfully", true);
         }
     }
 }

@@ -20,6 +20,8 @@ namespace Reservationpitch.Domain.Interfaces
         public Task<SystemUser> FindUserByIdAsync(string userId);
         public Task<SystemUser> FindUserByNameAsync(string userName);
         public Task<bool> AssignRoleToUser(string email, string roleName);
-        public Task<IdentityResult> UpdateAsync(SystemUser user);
+        public Task<SystemUser> UpdateAsync(SystemUser user);
+        public Task<IEnumerable<SystemUser>>GetAllAsync();
+        public Task<SystemUser>GetByIdAsync(string Id);
     }
 }

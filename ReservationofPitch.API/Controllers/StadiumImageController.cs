@@ -29,13 +29,13 @@ namespace ReservationofPitch.API.Controllers
             return await Result<IEnumerable<StadiumImageResponseDto>>.SuccessAsync(result.Data, "Viewed Successfully", true);
         }
 
-        [HttpGet]
-        [Route("{id:Guid}")]
-        public async Task<Result<IEnumerable<StadiumImageResponseDto>>> Get([FromRoute] Guid id, CancellationToken cancellationToken)
+        [HttpGet("getImage/{stadiumId}")]
+        
+        public async Task<Result<IEnumerable<StadiumImageResponseDto>>> Get(Guid stadiumId, CancellationToken cancellationToken)
         {
             var command = new GetByStadiumIdQuery
             {
-                PitchId = id,
+                PitchId = stadiumId,
             };
             var result = await _sender.Send(command, cancellationToken);
 

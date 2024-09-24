@@ -36,14 +36,13 @@ namespace ReservationofPitch.API.Controllers
         }
 
 
-        [HttpGet]
-        [Route("{id:Guid}")]
+        [HttpGet("getStadium/{stadiumId}")]
 
-        public async Task<Result<StadiumResponseDto>> Get([FromRoute] Guid id, CancellationToken cancellationToken)
+        public async Task<Result<StadiumResponseDto>> Get(Guid stadiumId, CancellationToken cancellationToken)
         {
             var query = new GetByIdStadiumQuery
             {
-                Id = id,
+                Id = stadiumId,
             };
 
             var response = await _sender.Send(query, cancellationToken);

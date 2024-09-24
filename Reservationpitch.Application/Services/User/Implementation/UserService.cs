@@ -99,9 +99,11 @@ namespace Reservationpitch.Application.Services.User.Implementation
                     {
                         User = new UserResponseDto
                         {
+                            Id = checkUsernameResult.Id,
                             Email = checkUsernameResult.Email,
                             Name = checkUsernameResult.Name,
                             PhoneNumber = checkUsernameResult.PhoneNumber,
+                            ImageUrl = checkUsernameResult.ImageUrl
                         },
                         Token = tokens,
                         RefreshToken = refreshToken,
@@ -117,7 +119,7 @@ namespace Reservationpitch.Application.Services.User.Implementation
         public async Task<Result<UserResponseDto>> Register(RegisterRequestDto request)
         {
             var mappedModel = await _mapper.Map<RegisterRequestDto, SystemUser>(request);
-            
+            mappedModel.Data.NoneHashedPassword = request.Password;
             mappedModel.Data.Name = request.UserName;
 
             var result = await _repository.CreateUserAsync(mappedModel.Data, request.Password);
@@ -182,5 +184,53 @@ namespace Reservationpitch.Application.Services.User.Implementation
 
         }
 
+        public async Task<Result<IEnumerable<SystemUser>>> GetAllAsync()
+        {
+            var result = await _repository.GetAllAsync();
+
+            return await Result<IEnumerable<SystemUser>>.SuccessAsync(result, "Get All Users Successfully", true);
+
+        }
+
+        public async Task<Result<UserResponseDto>> GetByIdAsync(string Id)
+        {
+            var result = await _repository.GetByIdAsync(Id);
+
+            var mappedModel = new UserResponseDto
+            {
+                Id = result.Id,
+                Email = result.Email,
+                Name = result.Name,
+                PhoneNumber = result.PhoneNumber,
+                NoneHashedPassword = result.NoneHashedPassword,
+                ImageUrl = result.ImageUrl
+            };
+
+            return await Result<UserResponseDto>.SuccessAsync(mappedModel, "User is Found Successfully", true);
+        }
+
+        public async Task<Result<UserResponseDto>> UpdateAsync(string userId, UpdateUserRequestDto request)
+        {
+            var model = new SystemUser
+            {
+                Id = userId,
+                Name = request.Name,
+                PhoneNumber = request.PhoneNumber,
+            };
+
+            var result = await _repository.UpdateAsync(model);
+
+            var mappedModel = new UserResponseDto
+            {
+                Id = result.Id,
+                Name = result.Name,
+                PhoneNumber = result.PhoneNumber,
+                NoneHashedPassword = result.NoneHashedPassword,
+                Email = result.Email,
+                ImageUrl = result.ImageUrl
+            };
+
+            return await Result<UserResponseDto>.SuccessAsync(mappedModel, "User updated Successfully", true);
+        }
     }
 }

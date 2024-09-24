@@ -59,9 +59,18 @@ namespace Reservationpitch.Infustractur.Implementation
             throw new NotImplementedException();
         }
 
-        public Task<T> FindAsync(Expression<Func<T, bool>> expression, CancellationToken cancellationToken)
+        public async Task<T> FindAsync(Expression<Func<T, bool>> expression, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var result = await _context.Set<T>().Where(expression).FirstOrDefaultAsync();
+
+            if(result is not null)
+            {
+                return result;
+            }
+            else
+            {
+                throw new IdNullException($"{expression}");
+            }
         }
 
         public Task<IEnumerable<R>> FindAsync<R>(Expression<Func<T, R>> selector, Expression<Func<T, bool>> expression)

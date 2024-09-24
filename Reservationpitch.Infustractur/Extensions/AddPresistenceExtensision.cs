@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Reservationpitch.Domain.Interface;
 using Reservationpitch.Domain.Interfaces;
 using Reservationpitch.Domain.Shared;
 using Reservationpitch.Infustractur.Database;
 using Reservationpitch.Infustractur.Email;
 using Reservationpitch.Infustractur.Implementation;
+using Reservationpitch.Infustractur.Shared.Implementation;
 
 namespace Reservationpitch.Infustractur.Extensions
 {
@@ -31,7 +33,9 @@ namespace Reservationpitch.Infustractur.Extensions
             services.AddScoped<IUserManagerRepository, UserManagerRepository>();
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IStadiumCenterRepository, StadiumCenterRepository>();
+            services.AddScoped<IImageRepository, ImageRepository>();
             services.AddScoped<IStadiumReservationRepository, StadiumReservationRepository>();
+
             services.Configure<JwtOptions>(configuration.GetSection("JwtOptions"));
 
             return services;

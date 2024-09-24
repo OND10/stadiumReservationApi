@@ -13,6 +13,7 @@ namespace Reservationpitch.Domain.Entities
         public double PriceinHour { get; set; }
         public string Type { get; set; } = string.Empty;
         public string NoOfplayers { get; set; } = null!;
+        
         public Guid stadiumCenterId { get; set; }
 
     }

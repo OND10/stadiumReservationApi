@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Reservationpitch.Application.DTOs.WorkDayDTOs.Request;
 using Reservationpitch.Domain.Entities;
 using Reservationpitch.Infustractur.Database;
@@ -17,6 +18,14 @@ namespace ReservationofPitch.API.Controllers
             _context = context;
         }
 
+
+        [HttpGet("getworkDay/{centerId}")]
+        public async Task<IActionResult>Get(Guid centerId)
+        {
+            var result = await _context.WorkDays.Where(w=>w.stadiumCenterId == centerId).ToListAsync();
+
+            return Ok(result);
+        }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] WorkDayRequestDto request)

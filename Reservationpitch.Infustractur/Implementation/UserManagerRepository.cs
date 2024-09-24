@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Reservationpitch.Domain.Common.Exceptions;
 using Reservationpitch.Domain.Entities;
 using Reservationpitch.Domain.Interfaces;
 using Reservationpitch.Infustractur.Database;
@@ -11,7 +12,7 @@ namespace CMS.Infustracture.Implementation
         private readonly ApplicationDbContext _context;
         private readonly UserManager<SystemUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public UserManagerRepository(ApplicationDbContext context, UserManager<SystemUser> userManager, 
+        public UserManagerRepository(ApplicationDbContext context, UserManager<SystemUser> userManager,
             RoleManager<IdentityRole> roleManager)
         {
             _context = context;
@@ -83,16 +84,49 @@ namespace CMS.Infustracture.Implementation
             return result;
         }
 
+        public async Task<IEnumerable<SystemUser>> GetAllAsync()
+        {
+            var result = await _context.systemUsers.ToListAsync();
+
+            return result;
+        }
+
+        public async Task<SystemUser> GetByIdAsync(string Id)
+        {
+            var result = await _context.systemUsers.Where(u => u.Id == Id).FirstOrDefaultAsync();
+            if (result is not null)
+            {
+                return result;
+            }
+            else
+            {
+                throw new IdNullException($"{result} is null");
+            }
+
+        }
+
         public async Task<IList<string>> GetUserRolesAsync(SystemUser user)
         {
             var result = await _userManager.GetRolesAsync(user);
             return result;
         }
 
-        public async Task<IdentityResult> UpdateAsync(SystemUser user)
+        public async Task<SystemUser> UpdateAsync(SystemUser user)
         {
-            var result = await _userManager.UpdateAsync(user);
-            return result;
+            var existingUser = await _context.systemUsers.FirstOrDefaultAsync(c => c.Id == user.Id);
+
+            if (existingUser == null)
+            {
+                throw new ModelNullException($"{user.Id}", "Model is null");
+            }
+
+            existingUser.Name = user.Name;
+            existingUser.UserName = user.Name;
+            existingUser.PhoneNumber = user.PhoneNumber;
+
+            await _context.SaveChangesAsync();
+
+            return existingUser;
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
+using OnMapper;
 using Reservationpitch.Application.Abstractions.Messaging;
 using Reservationpitch.Application.Common.Handling;
 using Reservationpitch.Application.DTOs.StadiumDTOs.Response;
+using Reservationpitch.Domain.Entities;
 using Reservationpitch.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -15,8 +17,8 @@ namespace Reservationpitch.Application.Services.StadiumServices.Queries.GetStadi
     public class GetByIdStadiumQueryHandler : IQueryHandler<GetByIdStadiumQuery, StadiumResponseDto>
     {
         private readonly IStadiumRepository _pitchRepository;
-        private readonly IMapper _mapper;
-        public GetByIdStadiumQueryHandler(IStadiumRepository pitchRepository, IMapper mapper)
+        private readonly OnMapping _mapper;
+        public GetByIdStadiumQueryHandler(IStadiumRepository pitchRepository, OnMapping mapper)
         {
             _pitchRepository = pitchRepository;
             _mapper = mapper;
@@ -26,9 +28,9 @@ namespace Reservationpitch.Application.Services.StadiumServices.Queries.GetStadi
         {
             var result = await _pitchRepository.FindAsync(p => p.Id == request.Id, cancellationToken);
 
-            var mappedResult = _mapper.Map<StadiumResponseDto>(result);
+            var mappedResult = await _mapper.Map<Stadium,StadiumResponseDto>(result);
 
-            return await Result<StadiumResponseDto>.SuccessAsync(mappedResult, "Found it Successfully", true);
+            return await Result<StadiumResponseDto>.SuccessAsync(mappedResult.Data, "Found it Successfully", true);
         }
     }
 }

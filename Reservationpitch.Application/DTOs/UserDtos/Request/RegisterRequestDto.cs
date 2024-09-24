@@ -1,4 +1,5 @@
-﻿using Reservationpitch.Application.Common.Handling;
+﻿using Microsoft.AspNetCore.Http;
+using Reservationpitch.Application.Common.Handling;
 using Reservationpitch.Application.Shared.Validations;
 using System.Text.RegularExpressions;
 
@@ -10,6 +11,8 @@ namespace Reservationpitch.Application.DTOs.UserDtos.Request
         public string UserName { get; set; } = string.Empty;
         public string Password { get; set; } = null!;
         public string PhoneNumber { get; set; } = string.Empty;
+        //public string ImageUrl {  get; set; } = string.Empty;
+        //public IFormFile file {  get; set; }
 
         public async Task<Result<string>> Emailvalidate()
         {

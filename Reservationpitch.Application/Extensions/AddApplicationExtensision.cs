@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using OnMapper;
+using Reservationpitch.Application.Services.Image.implementation;
+using Reservationpitch.Application.Services.Image.Interface;
 using Reservationpitch.Application.Services.User.Implementation;
 using Reservationpitch.Application.Services.User.Interface;
 using System;
@@ -19,6 +21,7 @@ namespace Reservationpitch.Application.Extensions
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddScoped<OnMapping>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IImageService, ImageService>();
             services.AddMediatR(ctg =>
             {
                 ctg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());

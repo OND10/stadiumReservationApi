@@ -17,6 +17,9 @@ namespace Reservationpitch.Application.Services.User.Interface
         Task<Result<SystemUser>> FindUserByUsernameAsync(string username);
         Task<Result<IEnumerable<string>>> GetUserRolesAsync(SystemUser user);
         Task<Result<RefreshTokenResponseDto>> RefreshTokenAsync(RefreshTokenRequestDto request);
+        Task<Result<IEnumerable<SystemUser>>> GetAllAsync();
+        Task<Result<UserResponseDto>> GetByIdAsync(string Id);
+        Task<Result<UserResponseDto>> UpdateAsync(string userId, UpdateUserRequestDto request);
 
     }
 }

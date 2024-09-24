@@ -12,7 +12,7 @@ namespace Reservationpitch.Application.DTOs.UserDtos.Response
         public string Token { get; set; } = null!;
         public string RefreshToken { get; set; }
         public List<string> Roles { get; set; }
-
+        
 
         public UserResponseDto User
         {
@@ -20,9 +20,11 @@ namespace Reservationpitch.Application.DTOs.UserDtos.Response
             {
                 return new UserResponseDto
                 {
+                    Id = user.Id,
                     Email = user.Email,
                     Name = user.Name,
                     PhoneNumber = user.PhoneNumber,
+                    ImageUrl = user.ImageUrl,
                 };
             }
             set
